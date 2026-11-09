@@ -160,5 +160,5 @@ The pane is rigid: only its **rotation and position** change, so it never bends.
 
 ## Credits
 
-Inspired by a Three.js wired-glass demo shared by neilson (@neilsonks on X). This is
-an independent reimplementation; all code and shaders here were written from scratch.
+Inspired by a Three.js wired-glass. 
+This is an independent reimplementation; all code and shaders here were written from scratch.
