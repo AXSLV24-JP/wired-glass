@@ -6,14 +6,20 @@ The pane is a rigid 3D slab that leans toward your finger or cursor, so touching
 a corner lifts that corner toward you. Four scenes sit behind the same glass: a
 garden, a coral reef, autumn oaks and climbing roses.
 
-<p>
-  <img src="docs/preview.png" alt="Wired glass pane leaning toward the top-right corner, with blurred green foliage behind it" width="560">
-  <img src="docs/preview-phone.png" alt="The same effect on a phone-sized screen" width="140">
-</p>
+<img src="docs/garden.gif" alt="Animated: the wired glass pane leans toward a cursor circling its corners, with backlit green foliage swaying behind it" width="400">
 
 ## Scenes
 
-<img src="docs/scenes.jpg" alt="The four scenes behind the wired glass: garden, coral reef, autumn oaks and magenta roses" width="720">
+<table>
+  <tr>
+    <td><img src="docs/garden.gif" alt="Animated garden scene: green foliage swaying behind the leaning glass" width="400"><br><b>Garden</b></td>
+    <td><img src="docs/reef.gif" alt="Animated reef scene: coral, seagrass and rising bubbles under sun shafts behind the leaning glass" width="400"><br><b>Reef</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/oak.gif" alt="Animated oak scene: autumn oak leaves drifting down in front of distant oak silhouettes" width="400"><br><b>Oak</b></td>
+    <td><img src="docs/roses.gif" alt="Animated roses scene: magenta roses and rose leaves behind the leaning glass" width="400"><br><b>Roses</b></td>
+  </tr>
+</table>
 
 | Scene | Link | What's behind the glass |
 | --- | --- | --- |
