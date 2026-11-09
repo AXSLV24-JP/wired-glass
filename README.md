@@ -1,14 +1,30 @@
 # Wired Glass
 
 A Three.js scene of hammered wired glass: a pebbled glass pane with a square wire
-mesh inside it, backlit plants swaying behind it, and a light that blooms through
-the glass. The pane is a rigid 3D slab that leans toward your finger or cursor, so
-touching near a corner lifts that corner toward you.
+mesh inside it, a living scene behind it, and a light that blooms through the glass.
+The pane is a rigid 3D slab that leans toward your finger or cursor, so touching near
+a corner lifts that corner toward you. Four scenes sit behind the same glass: a
+garden, a coral reef, autumn oaks and climbing roses.
 
 <p>
   <img src="docs/preview.png" alt="Wired glass pane leaning toward the top-right corner, with blurred green foliage behind it" width="560">
   <img src="docs/preview-phone.png" alt="The same effect on a phone-sized screen" width="140">
 </p>
+
+## Scenes
+
+<img src="docs/scenes.jpg" alt="The four scenes behind the wired glass: garden, coral reef, autumn oaks and magenta roses" width="720">
+
+| Scene | Link | What's behind the glass |
+| --- | --- | --- |
+| Garden | `#garden` | Backlit green foliage, open to a bright sky in the upper left. |
+| Reef | `#reef` | Branching and brain coral with seagrass on the sea floor. Sun shafts from the surface, caustic light ripples and rising bubbles. |
+| Oak | `#oak` | Autumn oak leaves on twigs, with leaves drifting down. A row of oak trees on the horizon shows as silhouettes in warm haze. |
+| Roses | `#roses` | Magenta roses with layered, ruffled petals among toothed rose leaves and red-brown canes. Green foliage with bright gaps behind, and falling petals. |
+
+Switch scenes with the buttons at the bottom of the page or the "Scene" picker in the
+settings panel. Adding `#reef`, `#oak` or `#roses` to the address opens that scene
+directly. Each scene also tints the glass and the wire slightly.
 
 ## Run it
 
@@ -35,7 +51,8 @@ block at the top of `index.html` to your local copies.
 
 ## Controls
 
-Hover, or touch and drag, near any part of the glass to lean that part toward you;
+Use the buttons at the bottom to change scene. Hover, or touch and drag, near any
+part of the glass to lean that part toward you;
 pressing brings it closer still. The light follows the finger, and drifts on its own
 when idle. The lil-gui panel exposes the pane's tilt, lift, spring damping, minimum size, an "always cover screen" switch and thickness, plus dimple size/depth, near/far refraction, blur, haze,
 glints, wire cell size/width/wobble, wind and parallax.
@@ -48,26 +65,38 @@ smooth.
 `index.html` is organised top to bottom as:
 
 1. `params`: starting values for everything the settings panel controls.
-2. **Garden pass:** the sky/light shader and the instanced leaves.
-3. **Glass pass:** the full-screen glass shader (dimples, refraction, depth blur,
+2. `THEMES`: each scene's colours, haze, glass tint and backdrop depth.
+3. **Scene pass:** the backdrop shader (sky, light, sun shafts, caustics, distant
+   oaks), the instanced shapes, and the `SCENES` builders that lay out each scene.
+4. **Glass pass:** the full-screen glass shader (dimples, refraction, depth blur,
    haze, glints, wire mesh), rendered into a texture.
-4. **Pane pass:** the thin glass slab, `coverSize()`, pointer springs and the frame loop.
+5. **Pane pass:** the thin glass slab, `coverSize()`, the scene switcher, pointer
+   springs and the frame loop.
 
 ## How the effect is built
 
 The look comes from one idea: **the further something is behind textured glass,
 the more the glass scrambles it.** Leaves pressed against the pane stay crisp;
-the garden a metre back becomes soft, milky colour.
+whatever is a metre back becomes soft, milky colour.
 
-### Pass 1 — the garden (render target)
+### Pass 1 — the scene (render target)
 
-* A full-screen sky shader: a green-to-white gradient, far-away canopy blobs from
-  fBm noise (denser bottom-right), and the light source (hot core + wide bloom).
-* ~3–5k leaves drawn as one `InstancedBufferGeometry`. Each instance carries
-  position, **distance from the glass**, rotation, scale and a seed. The vertex
-  shader adds per-leaf flutter, branch sway and pointer parallax (scaled by depth);
-  the fragment shader cuts the leaf shape (pointed blade + petiole, midrib, veins)
-  and brightens leaves near the light so they look backlit.
+* A full-screen backdrop shader: a sky or water gradient, far-away blurred mass from
+  fBm noise, and the light source (hot core + wide bloom). Each scene adds its own
+  backdrop. The reef gets sun shafts and caustics, and the oaks get a horizon of
+  trees, each crown built from overlapping clumps with a ragged edge.
+* Thousands of shapes drawn as one `InstancedBufferGeometry`. Each instance carries
+  position, **distance from the glass**, rotation, scale, a seed, a shape, a colour
+  and how it moves (sways, rises or falls). The vertex shader adds flutter, branch
+  sway, drifting and pointer parallax (scaled by depth). The fragment shader cuts the shape:
+  * a leaf, a lobed oak leaf or a toothed rose leaf;
+  * a coral finger (a capsule with polyps), or brain coral;
+  * a rose, built from rings of ruffled petals, each shadowed by the ring inside it;
+  * a blossom or a bubble.
+
+  Things near the light are brightened so they look backlit.
+* Scenes are laid out from a seeded random generator, so each one looks the same
+  on every load.
 * Output: `RGB = colour`, `A = depth` (0 on the glass, 1 far away), into a
   half-float, MSAA, **mipmapped** render target.
 
