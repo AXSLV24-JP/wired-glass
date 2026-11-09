@@ -6,8 +6,6 @@ The pane is a rigid 3D slab that leans toward your finger or cursor, so touching
 a corner lifts that corner toward you. Four scenes sit behind the same glass: a
 garden, a coral reef, autumn oaks and climbing roses.
 
-<img src="docs/garden.gif" alt="Animated: the wired glass pane leans toward a cursor circling its corners, with backlit green foliage swaying behind it" width="400">
-
 ## Scenes
 
 <table>
